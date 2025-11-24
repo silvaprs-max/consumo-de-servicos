@@ -22,6 +22,11 @@ const Sidebar = ({ isOpen, isMobile, onClose }) => {
     const [importFile, setImportFile] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
+    // Debug: verificar profile
+    console.log('🔍 Sidebar - User:', user?.email);
+    console.log('🔍 Sidebar - Profile:', profile);
+    console.log('🔍 Sidebar - Is Admin?', profile?.is_admin);
+
     const navItems = [
         { icon: Home, label: 'Início', path: '/' },
         { icon: List, label: 'Lançamentos', path: '/entries' },

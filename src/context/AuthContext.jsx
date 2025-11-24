@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
 
     // Função para buscar o perfil do usuário
     const fetchProfile = async (userId) => {
+        console.log('🔍 AuthContext - fetchProfile chamado para userId:', userId);
+
         if (!userId) {
             setProfile(null);
             return;
@@ -25,9 +27,11 @@ export const AuthProvider = ({ children }) => {
                 .single();
 
             if (error) throw error;
+
+            console.log('✅ AuthContext - Profile carregado:', data);
             setProfile(data);
         } catch (error) {
-            console.error('Erro ao buscar perfil:', error);
+            console.error('❌ AuthContext - Erro ao buscar perfil:', error);
             setProfile(null);
         }
     };

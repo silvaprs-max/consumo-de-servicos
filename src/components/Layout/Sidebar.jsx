@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, List, BarChart2, Zap, Sun, Moon, X, LogOut, Download, Upload } from 'lucide-react';
+import { Home, List, BarChart2, Zap, Sun, Moon, X, LogOut, Download, Upload, Shield } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { useAuth } from '../../context/AuthContext';
 import { Modal } from '../UI/Modal';
@@ -12,7 +12,7 @@ import { entryService } from '../../services/entryService';
 
 const Sidebar = ({ isOpen, isMobile, onClose }) => {
     const { theme, toggleTheme, entries, addEntry } = useData();
-    const { signOut, user } = useAuth();
+    const { signOut, user, profile } = useAuth();
     const { addToast } = useToast();
 
     const [showExportModal, setShowExportModal] = useState(false);
@@ -26,6 +26,7 @@ const Sidebar = ({ isOpen, isMobile, onClose }) => {
         { icon: Home, label: 'Início', path: '/' },
         { icon: List, label: 'Lançamentos', path: '/entries' },
         { icon: BarChart2, label: 'Dashboard', path: '/dashboard' },
+        ...(profile?.is_admin ? [{ icon: Shield, label: 'Admin', path: '/admin' }] : []),
     ];
 
     const handleExport = () => {

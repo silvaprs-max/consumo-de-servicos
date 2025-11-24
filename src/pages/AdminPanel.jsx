@@ -73,14 +73,11 @@ export default function AdminPanel() {
                 .delete()
                 .eq('user_id', userId);
 
-            // Deletar perfil
-            await supabase
+            // Deletar perfil (isso já impede o login do usuário)
+            const { error } = await supabase
                 .from('profiles')
                 .delete()
                 .eq('id', userId);
-
-            // Deletar usuário do auth
-            const { error } = await supabase.auth.admin.deleteUser(userId);
 
             if (error) throw error;
 

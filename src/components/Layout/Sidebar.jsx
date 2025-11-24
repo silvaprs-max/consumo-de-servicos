@@ -12,7 +12,7 @@ import { entryService } from '../../services/entryService';
 
 const Sidebar = ({ isOpen, isMobile, onClose }) => {
     const { theme, toggleTheme, entries, addEntry } = useData();
-    const { signOut, user, profile } = useAuth();
+    const { signOut, user } = useAuth();
     const { addToast } = useToast();
 
     const [showExportModal, setShowExportModal] = useState(false);
@@ -22,16 +22,10 @@ const Sidebar = ({ isOpen, isMobile, onClose }) => {
     const [importFile, setImportFile] = useState(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
-    // Debug: verificar profile
-    console.log('🔍 Sidebar - User:', user?.email);
-    console.log('🔍 Sidebar - Profile:', profile);
-    console.log('🔍 Sidebar - Is Admin?', profile?.is_admin);
-
     const navItems = [
         { icon: Home, label: 'Início', path: '/' },
         { icon: List, label: 'Lançamentos', path: '/entries' },
         { icon: BarChart2, label: 'Dashboard', path: '/dashboard' },
-        ...(profile?.is_admin ? [{ icon: Shield, label: 'Admin', path: '/admin' }] : []),
     ];
 
     const handleExport = () => {

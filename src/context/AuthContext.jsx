@@ -7,56 +7,21 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    // Função para buscar o perfil do usuário
-    const fetchProfile = async (userId) => {
-        console.log('🔍 AuthContext - fetchProfile chamado para userId:', userId);
-
-        if (!userId) {
-            setProfile(null);
-            return;
-        }
-
-        try {
-            const { data, error } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', userId)
-                .single();
-
-            if (error) throw error;
-
-            console.log('✅ AuthContext - Profile carregado:', data);
-            setProfile(data);
-        } catch (error) {
-            console.error('❌ AuthContext - Erro ao buscar perfil:', error);
-            setProfile(null);
-        }
-    };
 
     useEffect(() => {
         // Check active sessions and sets the user
         const getSession = async () => {
             const { data: { session } } = await supabase.auth.getSession();
             setUser(session?.user ?? null);
-            if (session?.user) {
-                await fetchProfile(session.user.id);
-            }
             setLoading(false);
         };
 
         getSession();
 
         // Listen for changes on auth state (logged in, signed out, etc.)
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
-            if (session?.user) {
-                await fetchProfile(session.user.id);
-            } else {
-                setProfile(null);
-            }
             setLoading(false);
         });
 
@@ -78,20 +43,16 @@ export const AuthProvider = ({ children }) => {
             password,
         });
         if (error) throw error;
-        if (data.user) {
-            await fetchProfile(data.user.id);
-        }
         return data;
     };
 
     const signOut = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        setProfile(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, profile, signUp, signIn, signOut, loading }}>
+        <AuthContext.Provider value={{ user, signUp, signIn, signOut, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );

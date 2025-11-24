@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/UI/Button';
 import { Input } from '../components/UI/Input';
 import { Card } from '../components/UI/Card';
@@ -50,9 +50,6 @@ const Login = () => {
                         <Button type="submit" disabled={loading} className="w-full">
                             {loading ? 'Entrando...' : 'Entrar'}
                         </Button>
-                        <p className="text-center text-sm text-text-secondary mt-4">
-                            Não tem uma conta? <Link to="/register" className="text-primary hover:underline">Registre-se</Link>
-                        </p>
                     </form>
                 </Card>
             </div>
